@@ -35,7 +35,7 @@ pipeline {
         stage('Deployment') {
             agent any
              steps {
-                    sh 'docker run -p 8082:8080 -v /home/ec2-user/logs/notification:/logs -e kafka.url=kafka:9092 --name notification --link=kafka notification:1.0'
+                    sh 'docker run -p 8082:8080 -v /home/ec2-user/logs/notification:/logs -e kafka.url=kafka:9092 -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --name notification --link=kafka notification:1.0'
                 }
         }
     }

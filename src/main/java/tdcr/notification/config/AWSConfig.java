@@ -14,7 +14,10 @@ import org.springframework.context.annotation.Configuration;
 public class AWSConfig {
 
     @Bean
-    public AWSCredentialsProvider awsCredentialsProvider(){
+    public AWSCredentialsProvider awsCredentialsProvider() throws Exception {
+        if(System.getenv("AWS_ACCESS_KEY_ID") == null || System.getenv("AWS_SECRET_ACCESS_KEY") == null ){
+            throw new Exception("invalid credentials");
+        }
         return new AWSCredentialsProviderChain(new EnvironmentVariableCredentialsProvider());
     }
 
