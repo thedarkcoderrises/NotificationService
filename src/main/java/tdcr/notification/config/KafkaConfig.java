@@ -2,6 +2,8 @@ package tdcr.notification.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +22,10 @@ public class KafkaConfig {
 
     @Value("${kafka.url}")
     String kafkaURL;
+    private static Logger LOG = LoggerFactory.getLogger(KafkaConfig.class);
 
     private Map<String, Object> consumerConfig() {
         Map<String, Object> config = new HashMap();
-
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaURL);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -39,6 +41,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String,UserCreatedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<String, UserCreatedEvent>();
         factory.setConsumerFactory(cosnumerCreateFactory());
+        LOG.info("UserCreatedEvent listener initialised..");
         return factory;
     }
 }

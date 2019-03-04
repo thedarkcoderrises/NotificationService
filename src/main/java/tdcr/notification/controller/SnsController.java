@@ -44,6 +44,7 @@ public class SnsController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        LOG.info("Notification sent successfully!");
     }
 
 }
