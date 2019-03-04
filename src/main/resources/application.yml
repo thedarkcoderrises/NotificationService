@@ -3,6 +3,8 @@
 
 #kafka.url: localhost:9092
 
+cloud.aws.stack.auto: false
+
 logging:
   level:
     root: ERROR
