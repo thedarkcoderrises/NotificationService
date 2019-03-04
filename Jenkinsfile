@@ -35,7 +35,7 @@ pipeline {
         stage('Deployment') {
             agent any
              steps {
-                    sh 'docker run -p 8082:8080 -v /home/ec2-user/logs/notification:/logs -e kafka.url=kafka:9092 --name notification --link=kafka notification:1.0'
+                    sh 'docker run -d -p 8082:8080 -v /home/ec2-user/logs/notification:/logs -e kafka.url=kafka:9092 --name notification --link=kafka notification:1.0'
                 }
         }
     }
