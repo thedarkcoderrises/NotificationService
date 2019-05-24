@@ -11,6 +11,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import tdcr.notification.events.ErrorDetails;
 import tdcr.notification.events.UserCreatedEvent;
 
 import java.util.HashMap;
@@ -29,19 +30,49 @@ public class KafkaConfig {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaURL);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return  config;
     }
 
     public ConsumerFactory<String, UserCreatedEvent> cosnumerCreateFactory() {
-        return new DefaultKafkaConsumerFactory(consumerConfig(),new StringDeserializer(),new JsonDeserializer(UserCreatedEvent.class));
+        return new DefaultKafkaConsumerFactory(consumerConfig(),
+                new StringDeserializer(),new JsonDeserializer(UserCreatedEvent.class));
     }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String,UserCreatedEvent> kafkaListenerCreateContainerFactory(){
         ConcurrentKafkaListenerContainerFactory<String,UserCreatedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<String, UserCreatedEvent>();
         factory.setConsumerFactory(cosnumerCreateFactory());
         LOG.info("UserCreatedEvent listener initialised..");
+        return factory;
+    }
+
+    public ConsumerFactory<String, ErrorDetails> incidentDetailsConsumerFactory() {
+        return new DefaultKafkaConsumerFactory(consumerConfig(),
+                new StringDeserializer(),new JsonDeserializer(ErrorDetails.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, ErrorDetails> kafkaListenerIncContainerFactory(){
+        ConcurrentKafkaListenerContainerFactory<String, ErrorDetails> factory =
+                new ConcurrentKafkaListenerContainerFactory<String, ErrorDetails>();
+        factory.setConsumerFactory(incidentDetailsConsumerFactory());
+        LOG.info("IncDetailEvent listener initialised..");
+        return factory;
+    }
+
+    public ConsumerFactory<String, String> defaultConsumerFactory() {
+        return new DefaultKafkaConsumerFactory(consumerConfig(),
+                new StringDeserializer(),new JsonDeserializer(String.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> defaultKafkaListenerContainerFactory(){
+        ConcurrentKafkaListenerContainerFactory factory =
+                new ConcurrentKafkaListenerContainerFactory<String, String>();
+        factory.setConsumerFactory(defaultConsumerFactory());
+        LOG.info("Default listener initialised..");
         return factory;
     }
 }
