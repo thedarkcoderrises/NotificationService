@@ -31,9 +31,11 @@ public class AmazonSNSPublisherService implements PublisherService {
     private String getTopicARN(String topic) throws Exception {
         switch(topic) {
             case TOPIC_SMS:
-                return "arn:aws:sns:us-east-1:763880534281:JB-TDCR-SNS-SMS-TOPIC";
+//                return "arn:aws:sns:us-east-1:763880534281:JB-TDCR-SNS-SMS-TOPIC";
+                return "arn:aws:sns:us-east-1:793439442352:test_topic";
             case TOPIC_EMAIL:
-                return  "arn:aws:sns:us-east-1:763880534281:JB-TDCR-SNS-EMAIL-TOPIC";
+//                return  "arn:aws:sns:us-east-1:763880534281:JB-TDCR-SNS-EMAIL-TOPIC";
+                return "arn:aws:sns:us-east-1:793439442352:test_topic_email";
             default:
                 throw new Exception("No matching topic supported!");
         }
