@@ -14,5 +14,5 @@ logging:
     com.amazonaws: INFO
   file: logs/notify.log
   pattern:
-    console:
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file:
